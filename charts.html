@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script type="text/javascript" src="./js/d3.js"></script>
+    <script type="text/javascript" src="./js/graph.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>DASHBOARD</h1>
+    </div>
+
+    <div class="main">
+        <div class="nav">
+            <h3>navigation</h3>
+            <ul>
+                <li class="nav-item">
+                    <a href="index.html">
+                        <span class="iconfont icon-zhuye"></span>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item charts active">
+                    <a href="charts.html">
+                        <span class="iconfont icon-tubiao"></span>
+                        <span>Charts</span>
+                        <div class="nav-charts">
+                            <ul>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
+                                    <span>Fig1</span>
+                                </li>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-zhexiantu"></span>
+                                    <span>Fig2</span>
+                                </li>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-bingtu"></span>
+                                    <span>Fig3</span>
+                                </li>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
+                                    <span>Fig1</span>
+                                </li>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-zhexiantu"></span>
+                                    <span>Fig2</span>
+                                </li>
+                                <li class="nav-charts-item">
+                                    <span class="iconfont icon-tubiao-bingtu"></span>
+                                    <span>Fig3</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html">
+                        <span class="iconfont icon-tishi"></span>
+                        <span>About</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="graph">
+                <div class="graph-hd">Title</div>
+                <div class="graph-bd"></div>
+            </div>
+        </div>
+        <div class="toolkit">
+            <h3>modify</h3>
+            <ul>
+                <li class="tool add">Add</li>
+                <li class="tool remove">Remove</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        let navCharts = document.querySelector('.nav .charts')
+        navCharts.addEventListener('mouseenter', function(e) {
+            document.querySelector('.nav .nav-charts').style.display = 'block'
+            e.stopPropagation()
+        }, true)
+        navCharts.addEventListener('mouseleave', function(e) {
+            document.querySelector('.nav .nav-charts').style.display = 'none'
+        })
+    </script>
+</body>
+</html>
