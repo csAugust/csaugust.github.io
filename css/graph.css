@@ -1,0 +1,17 @@
+.data_circle{
+    fill:rgb(40, 83, 239);
+    stroke: black;
+}
+.window{
+    opacity: 0.7;
+    background-color: rgb(244, 243, 193);
+    position: absolute;
+    z-index: 20;
+    white-space: pre-wrap;
+    margin:0px auto;
+    border:solid;
+    border-color: rgba(6, 3, 0, 0.628);
+}
+svg{
+    background-color: white;
+}

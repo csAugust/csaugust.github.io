@@ -23,8 +23,8 @@ function run() {
         { key: 19, value: 25 } 
     ];
     draw_bars(root, dataset)
-    let addButton = document.querySelector('.tool.add')
-    let removeButton = document.querySelector('.tool.remove')
+    let addButton = document.querySelector('.tool-button.add')
+    let removeButton = document.querySelector('.tool-button.remove')
     addButton.addEventListener('click', function(e) {
         var newNumber = Math.floor(Math.random() * 23) + 2
         dataset.push({
@@ -38,7 +38,7 @@ function run() {
         redraw_bars(root, dataset)
     })
 }
-window.addEventListener('load', run)
+//window.addEventListener('load', run)
 
 
 function draw_bars(root, dataset) {

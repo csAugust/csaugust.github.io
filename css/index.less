@@ -28,6 +28,8 @@
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
 
     .graph-hd {
+        position: relative;
+        z-index: 10;
         padding-left: 20px;
         height: 45px;
         line-height: 45px;
@@ -40,6 +42,7 @@
     }
     .graph-bd {
         height: @graphHeight - 45px;
+        position: relative;;
     }
     .graph-caption {
         padding: 20px;
@@ -95,9 +98,10 @@
             }
         }
 
-        .nav-charts {
+        .nav-charts-menu {
             display: none;
             position: absolute;
+            z-index: 100;
             top: 170px;
             left: 290px;
             transform: translateY(-50%);
@@ -108,13 +112,12 @@
             background-color: #fff;
             cursor: default;
             
-            
             ul {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-evenly;
                 padding: 16px;
-                li.nav-charts-item {
+                li.nav-charts-menu-item {
                     margin-bottom: 5px;
                     width: 80px;
                     height: 80px;
@@ -126,11 +129,14 @@
 
                     .iconfont {
                         display: block;
-                        line-height: 56px;
+                        padding: 12px 0 2px;
+                        line-height: 32px;
                         font-size: 32px;
                     }
-
                     &:hover {
+                        background-color: #eee;
+                    }
+                    &.active {
                         color: #fff;
                         background-color: #4680ff;
                     }
@@ -147,7 +153,6 @@
     .toolkit {
         flex: 2;
         padding: 0 10px;
-
         h3 {
             padding: 20px 0;
             height: 80px;
@@ -157,10 +162,12 @@
             font-size: 18px;
             font-weight: normal;
         }
-
         .tool {
             margin-bottom: 12px;
             height: 60px;
+        }
+
+        .tool-button {
             border-radius: 10px;
             line-height: 60px;
             text-align: center;
@@ -168,12 +175,23 @@
             font-size: 18px;
             cursor: pointer;
         }
-
         .add {
             background-color: #7cf29c;
         }
         .remove {
             background-color: #f0404c;
+        }
+        .commit {
+            background-color: #4680ff;
+        }
+
+        .tool-department {
+            line-height: 60px;
+            text-align: center;
+            font-size: 18px;
+            select {
+                font-size: 16px;
+            }
         }
     }
 }

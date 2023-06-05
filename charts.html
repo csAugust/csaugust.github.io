@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="./iconfont/iconfont.css">
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/graph.css">
     <script type="text/javascript" src="./js/d3.js"></script>
-    <script type="text/javascript" src="./js/graph.js"></script>
+    <script type="text/javascript" src="./js/data.js"></script>
+    <script type="text/javascript" src="./js/draw_graph.js"></script>
 </head>
 <body>
     <div class="header">
@@ -30,35 +32,35 @@
                     <a href="charts.html">
                         <span class="iconfont icon-tubiao"></span>
                         <span>Charts</span>
-                        <div class="nav-charts">
-                            <ul>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
-                                    <span>Fig1</span>
-                                </li>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-zhexiantu"></span>
-                                    <span>Fig2</span>
-                                </li>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-bingtu"></span>
-                                    <span>Fig3</span>
-                                </li>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
-                                    <span>Fig1</span>
-                                </li>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-zhexiantu"></span>
-                                    <span>Fig2</span>
-                                </li>
-                                <li class="nav-charts-item">
-                                    <span class="iconfont icon-tubiao-bingtu"></span>
-                                    <span>Fig3</span>
-                                </li>
-                            </ul>
-                        </div>
                     </a>
+                    <div class="nav-charts-menu">
+                        <ul>
+                            <li class="nav-charts-menu-item active" data-id="0">
+                                <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
+                                <span>Fig1</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="1">
+                                <span class="iconfont icon-tubiao-zhexiantu"></span>
+                                <span>Fig2</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="2">
+                                <span class="iconfont icon-tubiao-bingtu"></span>
+                                <span>Fig3</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="3">
+                                <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
+                                <span>Fig1</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="4">
+                                <span class="iconfont icon-tubiao-zhexiantu"></span>
+                                <span>Fig2</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="5">
+                                <span class="iconfont icon-tubiao-bingtu"></span>
+                                <span>Fig3</span>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="about.html">
@@ -77,20 +79,81 @@
         <div class="toolkit">
             <h3>modify</h3>
             <ul>
-                <li class="tool add">Add</li>
-                <li class="tool remove">Remove</li>
+                <li class="tool tool-button add">Add</li>
+                <li class="tool tool-button remove">Remove</li>
+                <li class="tool tool-department">
+                    <span>选择分区：</span>
+                    <select name="department" id="select-department">
+                        <option value="日常">日常</option>
+                        <option value="鬼畜调教">鬼畜调教</option>
+                        <option value="综合">综合</option>
+                        <option value="网络游戏">网络游戏</option>
+                        <option value="综艺">综艺</option>
+                        <option value="科技">科技</option>
+                        <option value="搞笑">搞笑</option>
+                        <option value="科普">科普</option>
+                    </select>
+                </li>
+                <li class="tool tool-button commit">Commit</li>
             </ul>
         </div>
     </div>
     <script>
-        let navCharts = document.querySelector('.nav .charts')
-        navCharts.addEventListener('mouseenter', function(e) {
-            document.querySelector('.nav .nav-charts').style.display = 'block'
+        // 显示图表类型选择菜单
+        let navChartsMenu = document.querySelector('.nav .charts')
+        navChartsMenu.addEventListener('mouseenter', function(e) {
+            document.querySelector('.nav .nav-charts-menu').style.display = 'block'
             e.stopPropagation()
         }, true)
-        navCharts.addEventListener('mouseleave', function(e) {
-            document.querySelector('.nav .nav-charts').style.display = 'none'
+        navChartsMenu.addEventListener('mouseleave', function(e) {
+            document.querySelector('.nav .nav-charts-menu').style.display = 'none'
         })
+
+        // 
+        let curGraphType = -1
+        const changeGraphType = function(type) {
+            if (type === curGraphType)
+                return
+            curGraphType = type
+            redrawGraph()
+            changeToolkit()
+        }
+        const redrawGraph = function() {
+            // 改变显示的图表类型
+            let originSvg = document.querySelector('.graph .graph-bd svg')
+            if (originSvg)
+                originSvg.remove()
+            let root = document.querySelector('.graph .graph-bd')
+            //let rootPos = root.getBoundingClientRect()
+            if (curGraphType === 0) {
+                draw_line_date(department="日常", date="2023-01-01",
+                    selector=d3.select(root), width=root.offsetWidth, height=root.offsetHeight,
+                    marginTop=-20, marginRight=10, marginBottom=50, marginLeft=80,
+                    w_height=50, w_width=200, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
+                )
+            }
+        }
+        const changeToolkit = function() {
+            // 改变该图表可调节的选项工具栏
+            if (curGraphType === 0) {
+                document.querySelectorAll('.tool').forEach(function(v) {
+                    v.style.display = 'none'
+                })
+                document.querySelector('.tool-department').style.display = 'block'
+                document.querySelector('.tool-button.commit').style.display = 'block'
+            }
+        }
+        let navChartsMenuItems = document.querySelectorAll('.nav-charts-menu-item')
+        navChartsMenuItems.forEach(function(v) {
+            v.addEventListener('click', function() {
+                changeGraphType(+v.dataset.id)
+                document.querySelector('.nav-charts-menu-item.active').classList.remove('active')
+                v.classList.add('active')
+            })
+        })
+
+        // 画初始的图表
+        window.addEventListener('load', changeGraphType(0))
     </script>
 </body>
 </html>
