@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/graph.css">
-    <script type="text/javascript" src="./js/d3.js"></script>
     <script type="text/javascript" src="./js/data.js"></script>
+    <script type="text/javascript" src="./js/d3.js"></script>
+    <script type="text/javascript" src="./js/d3.layout.cloud.js"></script>
     <script type="text/javascript" src="./js/draw_graph.js"></script>
 </head>
 <body>
@@ -73,7 +74,7 @@
         <div class="content">
             <div class="graph">
                 <div class="graph-hd">Title</div>
-                <div class="graph-bd"></div>
+                <div class="graph-bd" id="graph-bd"></div>
             </div>
         </div>
         <div class="toolkit">
@@ -94,6 +95,10 @@
                         <option value="科普">科普</option>
                     </select>
                 </li>
+                <li class="tool tool-time">
+                    <span>选择时间：</span>
+                    <input type="date" min="2022-09-26" max="2023-03-18" value="2023-01-01" required>
+                </li>
                 <li class="tool tool-button commit">Commit</li>
             </ul>
         </div>
@@ -109,8 +114,8 @@
             document.querySelector('.nav .nav-charts-menu').style.display = 'none'
         })
 
-        // 
-        let curGraphType = -1
+        // 从图表类型选择菜单选中不同图表时需要做的修改
+        let curGraphType = -1, curDepartment = "日常", curDate = "2023-01-01"
         const changeGraphType = function(type) {
             if (type === curGraphType)
                 return
@@ -120,26 +125,35 @@
         }
         const redrawGraph = function() {
             // 改变显示的图表类型
-            let originSvg = document.querySelector('.graph .graph-bd svg')
-            if (originSvg)
-                originSvg.remove()
+            let originGraph = document.querySelector('.graph .graph-bd')
+            originGraph.innerHTML = ""
             let root = document.querySelector('.graph .graph-bd')
-            //let rootPos = root.getBoundingClientRect()
             if (curGraphType === 0) {
-                draw_line_date(department="日常", date="2023-01-01",
+                draw_line_date(department=curDepartment, date=curDate,
                     selector=d3.select(root), width=root.offsetWidth, height=root.offsetHeight,
-                    marginTop=-20, marginRight=10, marginBottom=50, marginLeft=80,
-                    w_height=50, w_width=200, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
+                    marginTop=-20, marginRight=10, marginBottom=50, marginLeft=65,
+                    w_height=65, w_width=250, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
+                )
+            } else if (curGraphType === 1) {
+                draw_wordcloud_date(selector=d3.select(root), department=curDepartment, date=curDate,
+                    width=root.offsetWidth, height=root.offsetHeight, 
+                    color="rgb(38,181,243)", fontsize=7
                 )
             }
         }
         const changeToolkit = function() {
             // 改变该图表可调节的选项工具栏
+            document.querySelectorAll('.tool').forEach(function(v) {
+                v.style.display = 'none'
+            })
             if (curGraphType === 0) {
-                document.querySelectorAll('.tool').forEach(function(v) {
-                    v.style.display = 'none'
-                })
                 document.querySelector('.tool-department').style.display = 'block'
+                document.querySelector('.tool-time').style.display = 'block'
+                document.querySelector('.tool-button.commit').style.display = 'block'
+            }
+            if (curGraphType === 1) {
+                document.querySelector('.tool-department').style.display = 'block'
+                document.querySelector('.tool-time').style.display = 'block'
                 document.querySelector('.tool-button.commit').style.display = 'block'
             }
         }
@@ -154,6 +168,17 @@
 
         // 画初始的图表
         window.addEventListener('load', changeGraphType(0))
+
+        // 提交工具栏表单时做的修改
+        const changeGraphData = function() {
+            const department = document.querySelector('.tool.tool-department select')
+            curDepartment = department.value
+            const time = document.querySelector('.tool.tool-time input')
+            curDate = time.value
+            redrawGraph()
+        }
+        let toolkitCommitButton = document.querySelector('.tool.tool-button.commit')
+        toolkitCommitButton.addEventListener('click', changeGraphData)
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-.data_circle{
-    fill:rgb(40, 83, 239);
+.data-circle{
+    fill:rgb(38, 181, 243);
     stroke: black;
 }
 .window{
@@ -11,6 +11,19 @@
     margin:0px auto;
     border:solid;
     border-color: rgba(6, 3, 0, 0.628);
+    width: 250;
+    height: 50;
+}
+body{
+    margin: 8px;
+}
+.n2233{
+    margin-top: -41px;
+    width: 50*68/45px;
+    height: 50px;
+}
+.y-a{
+    font-size: 14px;
 }
 svg{
     background-color: white;
