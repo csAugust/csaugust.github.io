@@ -259,7 +259,8 @@ function draw_bar(selector,data=bar_data,width = 640,height = 400,marginTop = 20
     .attr("x",d=>`${xScale(d.department)-bar_width/2}px`).attr('y',d=>yScale(d.value))
     .attr('width',bar_width).attr('height',d=>`${height-marginBottom-yScale(d.value)}px`)
     .attr("fill",'rgb(38, 181, 243)')
-    .attr("stroke",'black');
+    .attr("stroke",'black')
+    .attr("data-departid", d=>`${d.id}`);
     
     //提示框
     var avg = d3.sum(data,d => d.value)/data.length;

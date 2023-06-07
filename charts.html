@@ -72,7 +72,7 @@
                 <li class="tool tool-button remove">Remove</li>
                 <li class="tool tool-department">
                     <span>选择分区：</span>
-                    <select name="department" id="select-department">
+                    <select name="department" id="select-department" onchange="redrawGraphWithNewData()">
                         <option value="日常">日常</option>
                         <option value="鬼畜调教">鬼畜调教</option>
                         <option value="综合">综合</option>
@@ -90,17 +90,18 @@
                 </li>
                 <li class="tool tool-month">
                     <span>选择月份：</span>
-                    <input type="month" min="2022-09" max="2023-03" value="2023-01" required>
+                    <input type="month" min="2022-09" max="2023-02" value="2023-01" onchange="redrawGraphWithNewData()" required>
                 </li>
                 <li class="tool tool-date">
                     <span>选择日期：</span>
-                    <input type="date" min="2022-09-26" max="2023-03-18" value="2023-01-01" required>
+                    <input type="date" min="2022-09-26" max="2023-03-18" value="2023-01-01" onchange="redrawGraphWithNewData()" required>
                 </li>
                 <li class="tool tool-button commit">确认</li>
             </ul>
         </div>
     </div>
     <script>
+        const id2depart = {'21':'日常','22':'鬼畜调教','27':'综合', '65':'网络游戏', '71':'综艺', '95':'科技', '138':'搞笑', '201':'科普', '172':'手机游戏'}
         // 显示图表类型选择菜单
         let navChartsMenu = document.querySelector('.nav .charts')
         navChartsMenu.addEventListener('mouseenter', function(e) {
@@ -113,17 +114,9 @@
 
         // 从图表类型选择菜单选中不同图表时需要做的修改
         let curGraphType = -1, curDepartment = "日常", curTimeType="date", curDate = "2023-01-01", curMonth = "2023-01"
-        const changeGraphType = function(type) {
-            if (type === curGraphType)
-                return
-            curGraphType = type
-            redrawGraph()
-            changeToolkit()
-        }
         const redrawGraph = function() {
             // 改变显示的图表类型
-            let originGraph = document.querySelector('.graph .graph-bd')
-            originGraph.innerHTML = ""
+            document.querySelector('.graph .graph-bd').innerHTML = ""
             let root = document.querySelector('.graph .graph-bd'), title = document.querySelector('.graph .graph-hd')
             if (curGraphType === 0) {
                 if (curTimeType==="date")
@@ -141,6 +134,7 @@
                 time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
                 title.innerText = `${curDepartment}分区${time_str}热度变化折线图`
             } else if (curGraphType === 1) {
+                console.log(department, curDate, curMonth, curTimeType);
                 if (curTimeType==="date")
                     draw_wordcloud_date(selector=d3.select(root), department=curDepartment, date=curDate,
                         width=root.offsetWidth, height=root.offsetHeight, 
@@ -168,7 +162,11 @@
                     )
                 time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
                 title.innerText = `${time_str}各分区热度对比柱状图`
+                bindBarLinks()
             }
+        }
+        const changeGraphType = function(type) {
+            curGraphType = type
         }
         const changeToolkit = function() {
             // 改变该图表可调节的选项工具栏
@@ -180,27 +178,55 @@
                 document.querySelector('.tool-time').style.display = 'block'
                 document.querySelector('.tool-date').style.display = 'block'
                 document.querySelector('.tool-month').style.display = 'block'
-                document.querySelector('.tool-button.commit').style.display = 'block'
+                //document.querySelector('.tool-button.commit').style.display = 'block'
             }
             else if (curGraphType === 1) {
                 document.querySelector('.tool-department').style.display = 'block'
                 document.querySelector('.tool-time').style.display = 'block'
                 document.querySelector('.tool-date').style.display = 'block'
                 document.querySelector('.tool-month').style.display = 'block'
-                document.querySelector('.tool-button.commit').style.display = 'block'
+                //document.querySelector('.tool-button.commit').style.display = 'block'
             }
             else if (curGraphType === 2) {
                 document.querySelector('.tool-time').style.display = 'block'
                 document.querySelector('.tool-date').style.display = 'block'
                 document.querySelector('.tool-month').style.display = 'block'
-                document.querySelector('.tool-button.commit').style.display = 'block'
+                //document.querySelector('.tool-button.commit').style.display = 'block'
             }
             changeTimeType()
+        }
+        // 提交工具栏表单时做的修改
+        const changeGraphData = function() {
+            const department = document.querySelector('.tool.tool-department select')
+            curDepartment = department.value
+            const radios = document.querySelectorAll('.tool.tool-time input')
+            if (radios[0].checked) 
+                curTimeType = radios[0].value
+            else if (radios[1].checked) 
+                curTimeType = radios[1].value
+            if (curTimeType === 'date') {
+                const date = document.querySelector('.tool.tool-date input')
+                if (document.querySelector('.tool.tool-date input:invalid')) {
+                    alert("请输入正确的时间 (2022-09-26 ~ 2023-03-18)")
+                    return
+                }
+                curDate = date.value
+            } else {
+                const month = document.querySelector('.tool.tool-month input')
+                if (document.querySelector('.tool.tool-month input:invalid')) {
+                    alert("请输入正确的时间 (2022-09 ~ 2023-02)")
+                    return
+                }
+                curMonth = month.value
+            }
         }
         let navChartsMenuItems = document.querySelectorAll('.nav-charts-menu-item')
         navChartsMenuItems.forEach(function(v) {
             v.addEventListener('click', function() {
                 changeGraphType(+v.dataset.id)
+                changeToolkit()
+                changeGraphData()
+                redrawGraph()
                 document.querySelector('.nav-charts-menu-item.active').classList.remove('active')
                 v.classList.add('active')
             })
@@ -221,40 +247,56 @@
             }
         }
         document.querySelectorAll('.tool.tool-time input').forEach(function(v) {
-            v.addEventListener('click', changeTimeType)
+            v.addEventListener('click', function() {
+                changeTimeType()
+                changeGraphData()
+                redrawGraph()
+            })
         })
+
+        // 确认按钮
+        let toolkitCommitButton = document.querySelector('.tool.tool-button.commit')
+        toolkitCommitButton.addEventListener('click', function() {
+            changeGraphData()
+            redrawGraph()
+        })
+
+        // 点柱状图跳转折线图
+        const bindBarLinks = function() {
+            if (curGraphType !== 2) {
+                console.log(curGraphType, " cannot bind bar links")
+                return
+            }
+            let bars = document.querySelectorAll('.graph-bd rect')
+            bars.forEach(function(v) {
+                v.style.cursor = 'pointer'
+                v.addEventListener('click', function() {
+                    console.log(`${v.dataset.departid}, ${id2depart[v.dataset.departid]}`);
+                    changeGraphType(0)
+                    changeToolkit()
+                    curDepartment = id2depart[v.dataset.departid]
+                    redrawGraph()
+                    document.querySelector('.nav-charts-menu-item.active').classList.remove('active')
+                    document.querySelector('.nav-charts-menu-item:nth-child(1)').classList.add('active')
+                })
+            })
+        }
 
         // 画初始的图表
         window.addEventListener('load', function() {
             changeGraphType(0)
+            changeToolkit()
             changeTimeType()
+            changeGraphData()
+            redrawGraph()
         })
 
-        // 提交工具栏表单时做的修改
-        const changeGraphData = function() {
-            const department = document.querySelector('.tool.tool-department select')
-            curDepartment = department.value
-            const radios = document.querySelectorAll('.tool.tool-time input')
-
-            if (curTimeType === 'date') {
-                const date = document.querySelector('.tool.tool-date input')
-                if (document.querySelector('.tool.tool-date input:invalid')) {
-                    alert("请输入正确的时间 (2022-09-26 ~ 2023-03-18)")
-                    return
-                }
-                curDate = date.value
-            } else {
-                const month = document.querySelector('.tool.tool-month input')
-                if (document.querySelector('.tool.tool-month input:invalid')) {
-                    alert("请输入正确的时间 (2022-09 ~ 2023-03)")
-                    return
-                }
-                curMonth = month.value
-            }
+        // 重新获取数据并绘制图表
+        const redrawGraphWithNewData = function() {
+            changeGraphData()
             redrawGraph()
         }
-        let toolkitCommitButton = document.querySelector('.tool.tool-button.commit')
-        toolkitCommitButton.addEventListener('click', changeGraphData)
+
     </script>
 </body>
 </html>
