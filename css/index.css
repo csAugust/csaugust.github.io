@@ -41,10 +41,24 @@
   position: relative;
 }
 .graph .graph-caption {
+  overflow: auto;
   padding: 20px;
   height: 555px;
   line-height: 1.6;
   font-size: 20px;
+}
+.graph .graph-caption h5 {
+  margin: 6px 0;
+  text-indent: 1em;
+}
+.graph .graph-caption p {
+  text-indent: 2em;
+}
+.graph .graph-caption table,
+.graph .graph-caption tr,
+.graph .graph-caption td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 .main {
   display: flex;
@@ -56,10 +70,10 @@
   box-shadow: 1px 0px 6px 1px rgba(0, 0, 0, 0.1);
 }
 .main .nav h3 {
-  padding: 20px 0;
+  padding: 20px 0 0 40px;
   height: 80px;
   line-height: 40px;
-  text-align: center;
+  text-align: left;
   color: #ced4da;
   font-size: 18px;
   font-weight: normal;
@@ -150,6 +164,7 @@
   font-weight: normal;
 }
 .main .toolkit .tool {
+  display: flex;
   margin-bottom: 12px;
   height: 60px;
 }
@@ -171,7 +186,7 @@
   background-color: #4680ff;
 }
 .main .toolkit .tool-department {
-  height: 36px;
+  height: 48px;
   line-height: 36px;
   text-align: center;
   font-size: 18px;
@@ -185,9 +200,18 @@
   text-align: center;
   font-size: 18px;
 }
-.main .toolkit .tool-time input {
+.main .toolkit .tool-date,
+.main .toolkit .tool-month {
+  height: 48px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 18px;
+}
+.main .toolkit .tool-date input,
+.main .toolkit .tool-month input {
   font-size: 12px;
 }
-.main .toolkit .tool-time input:invalid {
+.main .toolkit .tool-date input:invalid,
+.main .toolkit .tool-month input:invalid {
   color: red;
 }

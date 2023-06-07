@@ -16,49 +16,37 @@
 </head>
 <body>
     <div class="header">
-        <h1>DASHBOARD</h1>
+        <h1>bilibili 热榜可视化</h1>
     </div>
 
     <div class="main">
         <div class="nav">
-            <h3>navigation</h3>
+            <h3>展示内容选择</h3>
             <ul>
                 <li class="nav-item">
                     <a href="index.html">
                         <span class="iconfont icon-zhuye"></span>
-                        <span>Home</span>
+                        <span>项目介绍</span>
                     </a>
                 </li>
                 <li class="nav-item charts active">
                     <a href="charts.html">
                         <span class="iconfont icon-tubiao"></span>
-                        <span>Charts</span>
+                        <span>图表展示</span>
                     </a>
                     <div class="nav-charts-menu">
                         <ul>
                             <li class="nav-charts-menu-item active" data-id="0">
-                                <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
-                                <span>Fig1</span>
+                                <span class="iconfont icon-tubiao-zhexiantu"></span>
+                                <span>热度折线图</span>
                             </li>
                             <li class="nav-charts-menu-item" data-id="1">
-                                <span class="iconfont icon-tubiao-zhexiantu"></span>
-                                <span>Fig2</span>
+                                <span class="iconfont icon-ciyun"></span>
+                                <span>热词词云图</span>
                             </li>
                             <li class="nav-charts-menu-item" data-id="2">
-                                <span class="iconfont icon-tubiao-bingtu"></span>
-                                <span>Fig3</span>
-                            </li>
-                            <li class="nav-charts-menu-item" data-id="3">
                                 <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
-                                <span>Fig1</span>
-                            </li>
-                            <li class="nav-charts-menu-item" data-id="4">
-                                <span class="iconfont icon-tubiao-zhexiantu"></span>
-                                <span>Fig2</span>
-                            </li>
-                            <li class="nav-charts-menu-item" data-id="5">
-                                <span class="iconfont icon-tubiao-bingtu"></span>
-                                <span>Fig3</span>
+                                <span>分区柱状图</span>
                             </li>
                         </ul>
                     </div>
@@ -66,7 +54,7 @@
                 <li class="nav-item">
                     <a href="about.html">
                         <span class="iconfont icon-tishi"></span>
-                        <span>About</span>
+                        <span>分工流程</span>
                     </a>
                 </li>
             </ul>
@@ -78,7 +66,7 @@
             </div>
         </div>
         <div class="toolkit">
-            <h3>modify</h3>
+            <h3>图表参数选择</h3>
             <ul>
                 <li class="tool tool-button add">Add</li>
                 <li class="tool tool-button remove">Remove</li>
@@ -93,13 +81,22 @@
                         <option value="科技">科技</option>
                         <option value="搞笑">搞笑</option>
                         <option value="科普">科普</option>
+                        <option value="手机游戏">手机游戏</option>
                     </select>
                 </li>
                 <li class="tool tool-time">
-                    <span>选择时间：</span>
+                    <label><input type="radio" name="radio-time" value="month"> 每月 </label>
+                    <label><input type="radio" name="radio-time" value="date" checked> 每日 </label>
+                </li>
+                <li class="tool tool-month">
+                    <span>选择月份：</span>
+                    <input type="month" min="2022-09" max="2023-03" value="2023-01" required>
+                </li>
+                <li class="tool tool-date">
+                    <span>选择日期：</span>
                     <input type="date" min="2022-09-26" max="2023-03-18" value="2023-01-01" required>
                 </li>
-                <li class="tool tool-button commit">Commit</li>
+                <li class="tool tool-button commit">确认</li>
             </ul>
         </div>
     </div>
@@ -115,7 +112,7 @@
         })
 
         // 从图表类型选择菜单选中不同图表时需要做的修改
-        let curGraphType = -1, curDepartment = "日常", curDate = "2023-01-01"
+        let curGraphType = -1, curDepartment = "日常", curTimeType="date", curDate = "2023-01-01", curMonth = "2023-01"
         const changeGraphType = function(type) {
             if (type === curGraphType)
                 return
@@ -127,18 +124,50 @@
             // 改变显示的图表类型
             let originGraph = document.querySelector('.graph .graph-bd')
             originGraph.innerHTML = ""
-            let root = document.querySelector('.graph .graph-bd')
+            let root = document.querySelector('.graph .graph-bd'), title = document.querySelector('.graph .graph-hd')
             if (curGraphType === 0) {
-                draw_line_date(department=curDepartment, date=curDate,
-                    selector=d3.select(root), width=root.offsetWidth, height=root.offsetHeight,
-                    marginTop=-20, marginRight=10, marginBottom=50, marginLeft=65,
-                    w_height=65, w_width=250, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
-                )
+                if (curTimeType==="date")
+                    draw_line_date(department=curDepartment, date=curDate,
+                        selector=d3.select(root), width=root.offsetWidth, height=root.offsetHeight,
+                        marginTop=-20, marginRight=10, marginBottom=50, marginLeft=65,
+                        w_height=65, w_width=250, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
+                    )
+                else
+                    draw_line_month(department=curDepartment, y_m=curMonth,
+                        selector=d3.select(root), width=root.offsetWidth, height=root.offsetHeight,
+                        marginTop=-20, marginRight=10, marginBottom=50, marginLeft=65,
+                        w_height=65, w_width=250, r=5, rgb="rgb(108, 117, 125)", MarginX=8, MarginY=8
+                    )
+                time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
+                title.innerText = `${curDepartment}分区${time_str}热度变化折线图`
             } else if (curGraphType === 1) {
-                draw_wordcloud_date(selector=d3.select(root), department=curDepartment, date=curDate,
-                    width=root.offsetWidth, height=root.offsetHeight, 
-                    color="rgb(38,181,243)", fontsize=7
-                )
+                if (curTimeType==="date")
+                    draw_wordcloud_date(selector=d3.select(root), department=curDepartment, date=curDate,
+                        width=root.offsetWidth, height=root.offsetHeight, 
+                        color="rgb(38,181,243)", fontsize=7
+                    )
+                else
+                    draw_wordcloud_month(selector=d3.select(root), department=curDepartment, y_m=curMonth,
+                        width=root.offsetWidth, height=root.offsetHeight, 
+                        color="rgb(38,181,243)", fontsize=7
+                    )
+                time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
+                title.innerText = `${curDepartment}分区${time_str}热词词云图`
+            } else if (curGraphType === 2) {
+                if (curTimeType==="date")
+                    draw_bar_date(selector=d3.select(root), date=curDate, 
+                        bar_width=40, width=root.offsetWidth, height=root.offsetHeight, 
+                        marginTop=30, marginRight=30, marginBottom=70, marginLeft=140, 
+                        w_height=65, w_width=250
+                    )
+                else
+                    draw_bar_month(selector=d3.select(root), y_m=curMonth, 
+                        bar_width=40, width=root.offsetWidth, height=root.offsetHeight, 
+                        marginTop=30, marginRight=30, marginBottom=70, marginLeft=140, 
+                        w_height=65, w_width=250
+                    )
+                time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
+                title.innerText = `${time_str}各分区热度对比柱状图`
             }
         }
         const changeToolkit = function() {
@@ -149,13 +178,24 @@
             if (curGraphType === 0) {
                 document.querySelector('.tool-department').style.display = 'block'
                 document.querySelector('.tool-time').style.display = 'block'
+                document.querySelector('.tool-date').style.display = 'block'
+                document.querySelector('.tool-month').style.display = 'block'
                 document.querySelector('.tool-button.commit').style.display = 'block'
             }
-            if (curGraphType === 1) {
+            else if (curGraphType === 1) {
                 document.querySelector('.tool-department').style.display = 'block'
                 document.querySelector('.tool-time').style.display = 'block'
+                document.querySelector('.tool-date').style.display = 'block'
+                document.querySelector('.tool-month').style.display = 'block'
                 document.querySelector('.tool-button.commit').style.display = 'block'
             }
+            else if (curGraphType === 2) {
+                document.querySelector('.tool-time').style.display = 'block'
+                document.querySelector('.tool-date').style.display = 'block'
+                document.querySelector('.tool-month').style.display = 'block'
+                document.querySelector('.tool-button.commit').style.display = 'block'
+            }
+            changeTimeType()
         }
         let navChartsMenuItems = document.querySelectorAll('.nav-charts-menu-item')
         navChartsMenuItems.forEach(function(v) {
@@ -166,15 +206,51 @@
             })
         })
 
+        // 选中每月/每天时修改工具栏显示
+        const changeTimeType = function() {
+            const radios = document.querySelectorAll('.tool.tool-time input')
+            if (radios[0].checked) {
+                curTimeType = radios[0].value
+                document.querySelector('.tool-date').style.display = 'none'
+                document.querySelector('.tool-month').style.display = 'block'
+            }
+            if (radios[1].checked) {
+                curTimeType = radios[1].value
+                document.querySelector('.tool-date').style.display = 'block'
+                document.querySelector('.tool-month').style.display = 'none'
+            }
+        }
+        document.querySelectorAll('.tool.tool-time input').forEach(function(v) {
+            v.addEventListener('click', changeTimeType)
+        })
+
         // 画初始的图表
-        window.addEventListener('load', changeGraphType(0))
+        window.addEventListener('load', function() {
+            changeGraphType(0)
+            changeTimeType()
+        })
 
         // 提交工具栏表单时做的修改
         const changeGraphData = function() {
             const department = document.querySelector('.tool.tool-department select')
             curDepartment = department.value
-            const time = document.querySelector('.tool.tool-time input')
-            curDate = time.value
+            const radios = document.querySelectorAll('.tool.tool-time input')
+
+            if (curTimeType === 'date') {
+                const date = document.querySelector('.tool.tool-date input')
+                if (document.querySelector('.tool.tool-date input:invalid')) {
+                    alert("请输入正确的时间 (2022-09-26 ~ 2023-03-18)")
+                    return
+                }
+                curDate = date.value
+            } else {
+                const month = document.querySelector('.tool.tool-month input')
+                if (document.querySelector('.tool.tool-month input:invalid')) {
+                    alert("请输入正确的时间 (2022-09 ~ 2023-03)")
+                    return
+                }
+                curMonth = month.value
+            }
             redrawGraph()
         }
         let toolkitCommitButton = document.querySelector('.tool.tool-button.commit')

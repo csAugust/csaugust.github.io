@@ -45,16 +45,27 @@
         position: relative;;
     }
     .graph-caption {
+        overflow: auto;
         padding: 20px;
         height: @graphHeight - 45px;
         line-height: 1.6;
         font-size: 20px;
+        h5 {
+            margin: 6px 0;
+            text-indent: 1em;
+        }
+        p {
+            text-indent: 2em;
+        }
+        table, tr, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
     }
 }
 
 .main {
     display: flex;
-    //height: 1000px;
 
     .nav {
         position: relative;
@@ -63,10 +74,10 @@
         box-shadow: 1px 0px 6px 1px rgba(0, 0, 0, 0.1);
 
         h3 {
-            padding: 20px 0;
+            padding: 20px 0 0 40px;
             height: 80px;
             line-height: 40px;
-            text-align: center;
+            text-align: left;
             color: #ced4da;
             font-size: 18px;
             font-weight: normal;
@@ -163,6 +174,7 @@
             font-weight: normal;
         }
         .tool {
+            display: flex;
             margin-bottom: 12px;
             height: 60px;
         }
@@ -186,7 +198,7 @@
         }
 
         .tool-department {
-            height: 36px;
+            height: 48px;
             line-height: 36px;
             text-align: center;
             font-size: 18px;
@@ -197,6 +209,13 @@
 
         .tool-time {
             height: 36px;
+            line-height: 36px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .tool-date, .tool-month {
+            height: 48px;
             line-height: 36px;
             text-align: center;
             font-size: 18px;
