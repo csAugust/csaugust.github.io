@@ -41,12 +41,13 @@
         box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.1);
     }
     .graph-bd {
+        //display: flex;
         height: @graphHeight - 45px;
-        position: relative;;
+        position: relative;
     }
     .graph-caption {
         overflow: auto;
-        padding: 20px;
+        padding: 20px 50px;
         height: @graphHeight - 45px;
         line-height: 1.6;
         font-size: 20px;
@@ -55,6 +56,10 @@
             text-indent: 1em;
         }
         p {
+            text-indent: 2em;
+        }
+        li {
+            font-size: 18px;
             text-indent: 2em;
         }
         table, tr, td {
@@ -126,7 +131,7 @@
             ul {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-evenly;
+                justify-content: space-between;
                 padding: 16px;
                 li.nav-charts-menu-item {
                     margin-bottom: 5px;

@@ -42,7 +42,7 @@
 }
 .graph .graph-caption {
   overflow: auto;
-  padding: 20px;
+  padding: 20px 50px;
   height: 555px;
   line-height: 1.6;
   font-size: 20px;
@@ -52,6 +52,10 @@
   text-indent: 1em;
 }
 .graph .graph-caption p {
+  text-indent: 2em;
+}
+.graph .graph-caption li {
+  font-size: 18px;
   text-indent: 2em;
 }
 .graph .graph-caption table,
@@ -120,7 +124,7 @@
 .main .nav .nav-charts-menu ul {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   padding: 16px;
 }
 .main .nav .nav-charts-menu ul li.nav-charts-menu-item {

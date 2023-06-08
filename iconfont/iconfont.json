@@ -6,9 +6,16 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "785014",
+      "name": "地图",
+      "font_class": "ditu",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
       "icon_id": "10883620",
       "name": "词云",
-      "font_class": "ciyun",
+      "font_class": "tubiao-ciyun",
       "unicode": "e8ba",
       "unicode_decimal": 59578
     },

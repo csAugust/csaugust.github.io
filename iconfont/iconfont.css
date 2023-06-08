@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4090954 */
-  src: url('iconfont.woff2?t=1686108238359') format('woff2'),
-       url('iconfont.woff?t=1686108238359') format('woff'),
-       url('iconfont.ttf?t=1686108238359') format('truetype');
+  src: url('iconfont.woff2?t=1686191979133') format('woff2'),
+       url('iconfont.woff?t=1686191979133') format('woff'),
+       url('iconfont.ttf?t=1686191979133') format('truetype');
 }
 
 .iconfont {
@@ -13,7 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-ciyun:before {
+.icon-ditu:before {
+  content: "\e649";
+}
+
+.icon-tubiao-ciyun:before {
   content: "\e8ba";
 }
 

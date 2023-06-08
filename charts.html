@@ -13,6 +13,11 @@
     <script type="text/javascript" src="./js/d3.js"></script>
     <script type="text/javascript" src="./js/d3.layout.cloud.js"></script>
     <script type="text/javascript" src="./js/draw_graph.js"></script>
+    <script type="text/javascript" src="./js/china.geo.js"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script type="text/javascript" src="./js/drawmap.js"></script>
 </head>
 <body>
     <div class="header">
@@ -41,12 +46,16 @@
                                 <span>热度折线图</span>
                             </li>
                             <li class="nav-charts-menu-item" data-id="1">
-                                <span class="iconfont icon-ciyun"></span>
+                                <span class="iconfont icon-tubiao-ciyun"></span>
                                 <span>热词词云图</span>
                             </li>
                             <li class="nav-charts-menu-item" data-id="2">
                                 <span class="iconfont icon-tubiao-zhuzhuangtu"></span>
                                 <span>分区柱状图</span>
+                            </li>
+                            <li class="nav-charts-menu-item" data-id="3">
+                                <span class="iconfont icon-ditu"></span>
+                                <span>地理分布图</span>
                             </li>
                         </ul>
                     </div>
@@ -101,6 +110,7 @@
         </div>
     </div>
     <script>
+        const depart2id = {'日常':'21','鬼畜调教':'22','综合':'27','网络游戏':'65','综艺':'71','科技':'95','搞笑':'138','科普':'201','手机游戏':'172'}
         const id2depart = {'21':'日常','22':'鬼畜调教','27':'综合', '65':'网络游戏', '71':'综艺', '95':'科技', '138':'搞笑', '201':'科普', '172':'手机游戏'}
         // 显示图表类型选择菜单
         let navChartsMenu = document.querySelector('.nav .charts')
@@ -138,12 +148,12 @@
                 if (curTimeType==="date")
                     draw_wordcloud_date(selector=d3.select(root), department=curDepartment, date=curDate,
                         width=root.offsetWidth, height=root.offsetHeight, 
-                        color="rgb(38,181,243)", fontsize=7
+                        color="rgb(38,181,243)", fontsize=4
                     )
                 else
                     draw_wordcloud_month(selector=d3.select(root), department=curDepartment, y_m=curMonth,
                         width=root.offsetWidth, height=root.offsetHeight, 
-                        color="rgb(38,181,243)", fontsize=7
+                        color="rgb(38,181,243)", fontsize=4
                     )
                 time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
                 title.innerText = `${curDepartment}分区${time_str}热词词云图`
@@ -163,10 +173,24 @@
                 time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
                 title.innerText = `${time_str}各分区热度对比柱状图`
                 bindBarLinks()
+            } else if (curGraphType === 3) {
+                drawmap(depart2id[curDepartment], curDate)
+                time_str = (curTimeType==="date")? `${curDate}日` : `${curMonth}月`
+                title.innerText = `${curDepartment}分区${time_str}对比同分区热度地理分布图`
             }
         }
         const changeGraphType = function(type) {
             curGraphType = type
+            if (curGraphType === 3) {
+                const radios = document.querySelectorAll('.tool.tool-time input')
+                radios[0].checked = false
+                radios[1].checked = true
+                changeTimeType()
+                document.querySelector('.nav-charts-menu').style.left = '200px'
+                document.querySelector('.graph-bd').style.display = 'flex'
+            } else {
+                document.querySelector('.graph-bd').style.display = 'block'
+            }
         }
         const changeToolkit = function() {
             // 改变该图表可调节的选项工具栏
@@ -191,6 +215,11 @@
                 document.querySelector('.tool-time').style.display = 'block'
                 document.querySelector('.tool-date').style.display = 'block'
                 document.querySelector('.tool-month').style.display = 'block'
+                //document.querySelector('.tool-button.commit').style.display = 'block'
+            }
+            else if (curGraphType === 3) {
+                document.querySelector('.tool-department').style.display = 'block'
+                document.querySelector('.tool-date').style.display = 'block'
                 //document.querySelector('.tool-button.commit').style.display = 'block'
             }
             changeTimeType()
