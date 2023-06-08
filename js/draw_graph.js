@@ -111,7 +111,7 @@ function draw_line_date(department,date,selector,width = 640,height = 400,margin
     for(i=0;i<24;i++){
         D.push({date:`${i+1}:00 `,value:data[i][0]+data[i][1]});
     }
-    plot(selector,data=D,width = width,height = height,marginTop = marginTop,marginRight = marginRight, marginBottom = marginBottom,marginLeft = marginLeft,Margin=Margin,w_height=w_height,w_width=w_width,r=r,rgb=rgb,t1="时刻：",t2="讨论热度：",t3="Hour",t4="Hot Index");
+    plot(selector,data=D,width = width,height = height,marginTop = marginTop,marginRight = marginRight, marginBottom = marginBottom,marginLeft = marginLeft,Margin=Margin,w_height=w_height,w_width=w_width,r=r,rgb=rgb,t1="时刻：",t2="讨论热度：",t3="Hour",t4="热度值");
 }
 function draw_line_month(department,y_m,selector,width = 640,height = 400,marginTop = 20,marginRight = 30, marginBottom = 30,marginLeft = 40,w_height=50,w_width=200,r=5,rgb="rgb(1,1,1)",Margin=8){
     departments = {'日常':'21','鬼畜调教':'22','综合':'27','网络游戏':'65','综艺':'71','科技':'95','搞笑':'138','科普':'201','手机游戏':'172'}
@@ -122,7 +122,7 @@ function draw_line_month(department,y_m,selector,width = 640,height = 400,margin
             D.push({date:key.slice(8),value:values["comment"]+values["danmu"]});
         }
     }
-    plot(selector,data=D,width = width,height = height,marginTop = marginTop,marginRight = marginRight, marginBottom = marginBottom,marginLeft = marginLeft,Margin=Margin,w_height=w_height,w_width=w_width,r=r,rgb=rgb,t1="日期：",t2="讨论热度：",t3=y_m,t4="Hot Index",fsize=12, rate=1);
+    plot(selector,data=D,width = width,height = height,marginTop = marginTop,marginRight = marginRight, marginBottom = marginBottom,marginLeft = marginLeft,Margin=Margin,w_height=w_height,w_width=w_width,r=r,rgb=rgb,t1="日期：",t2="讨论热度：",t3=y_m,t4="热度值",fsize=12, rate=1);
 }
 var words_data=[{word:"你好",size:12},{word:"再见",size:225},{word:"小笼包",size:7},{word:"对不起",size:51},{word:"您好",size:13},{word:"吃了没",size:11},{word:"天气",size:32}];
 function draw_wordcloud(selector,data=words_data,marginTop=0,marginRight=0,marginBottom=0,marginLeft=0,width=1200,height=600,padding=30,rotate=10,fontFamily="sans-serif",fontScale= 200,color="blue",c_color="gray"){
@@ -252,7 +252,7 @@ function draw_bar(selector,data=bar_data,width = 640,height = 400,marginTop = 20
     .attr("y", 80)
     .attr("fill", "currentColor")
     .attr("text-anchor", "start")
-    .text("Hot Index"));
+    .text("热度值"));
 
     // Append rect
     svg.selectAll('rect').data(data).join('rect').attr("onmouseover",d=>`show_bar(this,'d${d.id}')`).attr("onmouseout",d=>`hide_bar(this,'d${d.id}','rgb(38, 181, 243)')`)
