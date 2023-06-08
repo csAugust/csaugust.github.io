@@ -3,7 +3,7 @@
 }
 body {
   z-index: 200;
-  background: url('../images/bg.jpg') no-repeat right bottom / 30%;
+  background: url('../images/bg.jpg') no-repeat right bottom 10px/30%;
 }
 .header {
   position: relative;
