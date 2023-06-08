@@ -1,6 +1,10 @@
 .wrapper {
   margin: 0 auto;
 }
+body {
+  z-index: 200;
+  background: url('../images/bg.jpg') no-repeat right bottom / 30%;
+}
 .header {
   position: relative;
   z-index: 10;
